@@ -2,7 +2,7 @@
 ![Docker Image Version (latest by date)](https://img.shields.io/docker/v/devfox1/timesync?sort=date)  
 ![Docker Pulls](https://img.shields.io/docker/pulls/devfox1/timesync)  
 ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/devfox1/timesync?sort=date)
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/xXxNIKIxXx/TimeSync/docker-image.yml)  
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/xXxNIKIxXx/TimeSync/docker-image.yml)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/xXxNIKIxXx/TimeSync)  
 ![GitHub last commit](https://img.shields.io/github/last-commit/xXxNIKIxXx/TimeSync)
 
