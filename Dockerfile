@@ -3,7 +3,7 @@ FROM python:3.14.0a3-alpine3.21
 
 ENV PYTHONUNBUFFERED=1
 
-LABEL org.opencontainers.image.description="A short text-only description that will appear on the containers page."
+LABEL org.opencontainers.image.description="Automatically sync your All4Schools schedule with any CalDAV calendar application using Docker"
 LABEL org.opencontainers.image.authors="Niklas Fuchs"
 LABEL org.opencontainers.image.source = "https://github.com/xXxNIKIxXx/TimeSync"
 LABEL org.opencontainers.image.licenses="MIT"
