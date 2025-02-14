@@ -29,5 +29,5 @@ def calculate_free_times(lessons):
     if parse_datetime(lessons[-1]['end']) < day_end:
         free_times.append({'start': lessons[-1]['end'], 'end': day_end.isoformat()})
     
-    return free_times
+    return free_times[1:]
 

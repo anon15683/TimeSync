@@ -50,6 +50,15 @@ def process_event_with_progress(event, lock, processed_events, total_events, las
             print_progress_bar(processed_events[0], total_events)
             last_print_time[0] = current_time
 
+def process_free_time_range(time_range, lock, processed_free_times, total_free_times, last_print_time_free):
+    remove_events_in_time_range(time_range)
+    with lock:
+        processed_free_times[0] += 1
+        current_time = time.time()
+        if processed_free_times[0] == total_free_times or (current_time - last_print_time_free[0] >= int(os.getenv('SLEEP_PRINT_DELAY_SECONDS', 10)) / 2):
+            print_progress_bar(processed_free_times[0], total_free_times)
+            last_print_time_free[0] = current_time
+
 def main():
     print_with_timestamp("\033[94mLogging in...\033[0m")
     session_id, auth_token = get_cookies()
@@ -97,15 +106,6 @@ def main():
     total_free_times = len(free_times)
     processed_free_times = [0]
     last_print_time_free = [time.time()]
-
-    def process_free_time_range(time_range, lock, processed_free_times, total_free_times, last_print_time_free):
-        remove_events_in_time_range(time_range)
-        with lock:
-            processed_free_times[0] += 1
-            current_time = time.time()
-            if processed_free_times[0] == total_free_times or (current_time - last_print_time_free[0] >= int(os.getenv('SLEEP_PRINT_DELAY_SECONDS', 10)) / 2):
-                print_progress_bar(processed_free_times[0], total_free_times)
-                last_print_time_free[0] = current_time
 
     with ThreadPoolExecutor() as executor:
         executor.map(lambda time_range: process_free_time_range(time_range, lock, processed_free_times, total_free_times, last_print_time_free), free_times)
