@@ -66,7 +66,7 @@ services:
 
 Clone from github using:
 ```
-git clone https://github.com/xXxNIKIxXx/TimeSync--All4Schools-Schedule-Integration-.git
+git clone https://github.com/xXxNIKIxXx/TimeSync.git
 ```
 
 Create a compose.yml file:
