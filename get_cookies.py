@@ -4,7 +4,9 @@ import os
 
 load_dotenv(override=True)
 def get_cookies():
-    url = os.getenv('ALL4SCHOOLS_LOGIN_URL')
+    base_url = os.getenv('ALL4SCHOOLS_URL')
+    api_endpoint = 'modules/Login.aspx'
+    full_url = f"{base_url}/{api_endpoint}"
 
     data = {
         "__VIEWSTATE": os.getenv('ALL4SCHOOLS_VIEWSTATE'),
@@ -14,7 +16,7 @@ def get_cookies():
         "password": os.getenv('ALL4SCHOOLS_PASSWORD'),
     }
 
-    response = requests.post(url, data=data, allow_redirects=False)
+    response = requests.post(full_url, data=data, allow_redirects=False)
 
     cookies = response.headers.get("Set-Cookie")
     session_id = None

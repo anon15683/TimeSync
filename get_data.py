@@ -4,12 +4,14 @@ import os
 
 load_dotenv(override=True)
 
-def get_data(from_date, to_date, session_id, auth_token):
-    url = os.getenv('ALL4SCHOOLS_API_URL')
+def get_data(from_date, to_date, session_id, auth_token, user_id, school_id):
+    base_url = os.getenv('ALL4SCHOOLS_URL')
+    api_endpoint = 'api/api/Schedule/GetSchedule'
+    full_url = f"{base_url}/{api_endpoint}"
     
     data = {
-        "schoolId": 35,
-        "studentId": 4707,
+        "schoolId": school_id,
+        "studentId": user_id,
         "from": from_date,
         "to": to_date,
         "getAbsences": False,
@@ -21,7 +23,7 @@ def get_data(from_date, to_date, session_id, auth_token):
         ".ASPXAUTH": auth_token
     }
 
-    response = requests.post(url, json=data, cookies=cookies)
+    response = requests.post(full_url, json=data, cookies=cookies)
 
     if response.status_code == 200:
         try:

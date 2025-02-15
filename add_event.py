@@ -9,7 +9,7 @@ import hashlib
 load_dotenv(override=True)
 
 def add_event(subject, start_time, end_time, teacher, additional_teachers, room, additional_rooms, class_name):
-    url = os.getenv('SOGO_URL')
+    url = os.getenv('SOGO_CALENDAR_URL')
     username = os.getenv('SOGO_USERNAME')
     password = os.getenv('SOGO_PASSWORD')
     

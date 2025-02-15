@@ -10,7 +10,7 @@ from dateutil.parser import parse
 load_dotenv(override=True)
 
 def remove_events_in_time_range(time_range):
-    url = os.getenv('SOGO_URL')
+    url = os.getenv('SOGO_CALENDAR_URL')
     username = os.getenv('SOGO_USERNAME')
     password = os.getenv('SOGO_PASSWORD')
     
