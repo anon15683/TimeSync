@@ -121,7 +121,7 @@ SLEEP_PRINT_DELAY_SECONDS=10
 
 - **ViewState and EventValidation**
   1. Navigate to your All4Schools page.
-  2. 2. Press Ctrl+U to access page source.
+  2. Press Ctrl+U to access page source.
   3. Look vor `__VIEWSTATE` and `__EVENTVALIDATION`.
   4. Copy the string inside the quotes of the value property behind `__VIEWSTATE` and `__EVENTVALIDATION`.
 
