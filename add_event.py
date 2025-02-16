@@ -9,14 +9,39 @@ import hashlib
 load_dotenv(override=True)
 
 def add_event(subject, start_time, end_time, teacher, additional_teachers, room, additional_rooms, class_name):
+    """
+    Add a new event to the SOGo calendar or update an existing one.
+
+    This function creates a new calendar event with the given details or updates an existing event
+    if one with the same start and end time already exists. It also adds an alarm to the event.
+
+    Parameters:
+    subject (str): The subject or title of the event.
+    start_time (datetime): The start time of the event.
+    end_time (datetime): The end time of the event.
+    teacher (str): The primary teacher for the event.
+    additional_teachers (list): A list of additional teachers for the event.
+    room (str): The primary room for the event.
+    additional_rooms (list): A list of additional rooms for the event.
+    class_name (str): The name of the class associated with the event.
+
+    Returns:
+    None
+
+    Note:
+    The function uses environment variables for calendar URL, username, and password.
+    It creates a unique ID for each event based on its details.
+    If an event with the same start and end time exists, it's replaced with the new event.
+    Events in the past (end time before current time) are not added.
+    """
     url = os.getenv('SOGO_CALENDAR_URL')
     username = os.getenv('SOGO_USERNAME')
     password = os.getenv('SOGO_PASSWORD')
-    
+
     client = DAVClient(url=url, username=username, password=password)
-    
+
     calendar__ = client.calendar(url=os.getenv('SOGO_CALENDAR_URL'))
-    
+
     caldata = Calendar()
 
     uid_string = f"{subject}-{start_time}-{end_time}-{teacher}-{additional_teachers}-{room}-{additional_rooms}-{class_name}"
@@ -37,7 +62,7 @@ def add_event(subject, start_time, end_time, teacher, additional_teachers, room,
         location += f"\nZusätzliche Räume: {', '.join(additional_rooms)}"
     event.add("location", location)
     caldata.add_component(event)
-    
+
     alarm = Alarm()
     alarm.add("action", "DISPLAY")
     alarm.add("description", "Reminder")
@@ -61,3 +86,4 @@ def add_event(subject, start_time, end_time, teacher, additional_teachers, room,
 
     if not event_exists:
         calendar__.save_event(new_event)
+
