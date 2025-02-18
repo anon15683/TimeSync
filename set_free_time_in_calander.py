@@ -11,24 +11,21 @@ load_dotenv(override=True)
 
 def remove_events_in_time_range(time_range):
     """
-    Remove events from a SOGo calendar that fall within a specified time range.
+    Remove events from a calendar that do not overlap with specified free time slots.
 
-    This function connects to a SOGo calendar, retrieves events within a certain date range,
-    and deletes any events that overlap with the specified time range.
+    This function connects to a calendar service, retrieves events within a specified date range,
+    and deletes events that do not overlap with the provided free time slots.
 
     Parameters:
-    time_range (dict): A dictionary containing the start and end times for the range
-                       in which events should be removed. It should have two keys:
-                       'start' and 'end', with string values that can be parsed into
-                       datetime objects.
+    time_range (list of dict): A list of dictionaries, where each dictionary represents a free time slot
+                               with 'start' and 'end' keys containing datetime strings.
 
     Returns:
     None
 
     Note:
-    - This function relies on environment variables for calendar connection details.
-    - It uses the caldav library to interact with the calendar.
-    - Events are deleted if they start, end, or span within the specified time range.
+    - The function uses environment variables for calendar service credentials and configuration.
+    - Events are deleted if they fall completely outside the specified free time slots.
     """
     url = os.getenv('SOGO_CALENDAR_URL')
     username = os.getenv('SOGO_USERNAME')
@@ -39,17 +36,17 @@ def remove_events_in_time_range(time_range):
 
     start = datetime.now()
     end = datetime.now() + timedelta(days=int(os.getenv('DAYS_TO_UPDATE')))
-    existing_events = calendar__.date_search(start, end)
+    events_to_delete = calendar__.date_search(start, end)
 
-    range_start = parse(time_range['start'])
-    range_end = parse(time_range['end'])
 
-    for event in existing_events:
-        event_start = event.vobject_instance.vevent.dtstart.value
-        event_end = event.vobject_instance.vevent.dtend.value
+    for free_slot in time_range:
+        free_start = parse(free_slot['start'])
+        free_end = parse(free_slot['end'])
+        for event in events_to_delete:
+            event_start = event.vobject_instance.vevent.dtstart.value
+            event_end = event.vobject_instance.vevent.dtend.value
+            if (free_start <= event_start < free_end) or (free_start < event_end <= free_end) or (event_start <= free_start and event_end >= free_end):
+                events_to_delete.remove(event)
 
-        if (event_start > range_start and event_start < range_end) or \
-           (event_end > range_start and event_end < range_end) or \
-           (event_start < range_start and event_end > range_end):
-            event.delete()
-
+    for event in events_to_delete:
+        event.delete()
