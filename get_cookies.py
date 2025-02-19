@@ -4,6 +4,19 @@ import os
 
 load_dotenv(override=True)
 def get_cookies():
+    """
+    This function sends a POST request to the login page of a website,
+    retrieves the session ID and authentication token from the response headers,
+    and returns them as a tuple.
+
+    Parameters:
+    None
+
+    Returns:
+    tuple: A tuple containing the session ID and authentication token.
+           If either the session ID or authentication token is not found,
+           the corresponding value in the tuple will be None.
+    """
     base_url = os.getenv('ALL4SCHOOLS_URL')
     api_endpoint = 'modules/Login.aspx'
     full_url = f"{base_url}/{api_endpoint}"

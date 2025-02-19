@@ -124,6 +124,19 @@ def print_progress_bar(processed, total):
 
 
 def process_event_with_progress(event, lock, processed_events, total_events, last_print_time):
+    """
+    Processes an event and updates the progress bar.
+
+    Args:
+        event: The event to be processed.
+        lock: A threading lock to ensure thread-safe updates to the processed_events counter.
+        processed_events (list): A list containing a single integer representing the number of processed events.
+        total_events (int): The total number of events to be processed.
+        last_print_time (list): A list containing a single float representing the last time the progress bar was printed.
+
+    Returns:
+        None
+    """
     process_event(event)
     with lock:
         processed_events[0] += 1
@@ -132,7 +145,21 @@ def process_event_with_progress(event, lock, processed_events, total_events, las
             print_progress_bar(processed_events[0], total_events)
             last_print_time[0] = current_time
 
+
 def process_free_time_range(time_range, lock, processed_free_times, total_free_times, last_print_time_free):
+    """
+    Processes a given time range by removing events within that range and updating the progress.
+
+    Args:
+        time_range (tuple): The time range to process.
+        lock (threading.Lock): A lock to ensure thread-safe operations.
+        processed_free_times (list): A list containing the count of processed free times.
+        total_free_times (int): The total number of free times to process.
+        last_print_time_free (list): A list containing the last time the progress was printed.
+
+    Returns:
+        None
+    """
     remove_events_in_time_range(time_range)
     with lock:
         processed_free_times[0] += 1
@@ -169,7 +196,11 @@ def main():
 
     print_with_timestamp("\033[94mCompressing events...\033[0m")
     compressed_data = compress_events(parsed_data)
+    import json
+    with open("compressed.json", 'w') as json_file:
+        json.dump(compressed_data, json_file, indent=4)
     print_with_timestamp("\033[92mCompressed events\033[0m")
+
 
     print_with_timestamp("\033[94mAdding events to calendar...\033[0m")
     total_events = len(compressed_data)
@@ -187,15 +218,9 @@ def main():
     free_times = calculate_free_times(compressed_data)
     print_with_timestamp("\033[92mCalculated free times\033[0m")
     
-    print_with_timestamp("\033[94mRemoving free times from calendar...\033[0m")
-    total_free_times = len(free_times)
-    processed_free_times = [0]
-    last_print_time_free = [time.time()]
-
-    with ThreadPoolExecutor() as executor:
-        executor.map(lambda time_range: process_free_time_range(time_range, lock, processed_free_times, total_free_times, last_print_time_free), free_times)
-    print_progress_bar(total_free_times, total_free_times)
-    print_with_timestamp("\033[92mAll free times removed.\033[0m")
+    print_with_timestamp("\033[94mRemoving events from calendar...\033[0m")
+    remove_events_in_time_range(free_times)
+    print_with_timestamp("\033[92mRemoved events from calendar\033[0m")
 
 if __name__ == "__main__":
     interval_minutes = int(os.getenv('INTERVAL_MINUTES', 10))
