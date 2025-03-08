@@ -1,25 +1,3 @@
-from datetime import datetime, timedelta
-
-
-# Convert string to datetime
-def parse_datetime(dt_str):
-    """
-    Convert a string representation of a date and time to a datetime object.
-
-    This function uses the `fromisoformat` method to parse the input string,
-    which should be in ISO format (YYYY-MM-DD[*HH[:MM[:SS[.fff[fff]]]][+HH:MM[:SS[.ffffff]]]])
-
-    Args:
-        dt_str (str): A string representing a date and time in ISO format.
-
-    Returns:
-        datetime: A datetime object representing the parsed date and time.
-
-    Raises:
-        ValueError: If the input string is not in a valid ISO format.
-    """
-    return datetime.fromisoformat(dt_str)
-
 def calculate_free_times(lessons):
     """
     Calculate the free time slots from a list of scheduled lessons.
@@ -53,6 +31,5 @@ def calculate_free_times(lessons):
             compressed_data[-1]['end'] = entry['end']
         else:
             compressed_data.append(entry)
-            
     return compressed_data
 
