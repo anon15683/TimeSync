@@ -34,13 +34,13 @@ def add_event(subject, start_time, end_time, teacher, additional_teachers, room,
     If an event with the same start and end time exists, it's replaced with the new event.
     Events in the past (end time before current time) are not added.
     """
-    url = os.getenv('SOGO_CALENDAR_URL')
-    username = os.getenv('SOGO_USERNAME')
-    password = os.getenv('SOGO_PASSWORD')
+    url = os.getenv('CALENDAR_URL')
+    username = os.getenv('USERNAME')
+    password = os.getenv('PASSWORD')
 
     client = DAVClient(url=url, username=username, password=password)
 
-    calendar__ = client.calendar(url=os.getenv('SOGO_CALENDAR_URL'))
+    calendar__ = client.calendar(url=url)
 
     caldata = Calendar()
 

@@ -36,7 +36,7 @@ Automatically sync your All4Schools schedule with any CalDAV calendar applicatio
 ## Requirements
 
 - Docker installed on your system
-- CalDAV server (e.g., SOGo)
+- CalDAV server (e.g., SOGo or iCloud)
 - All4Schools login credentials
 
 ## Deployment Options
@@ -98,9 +98,9 @@ services:
 Create a .env file:
 
 ```bash
-SOGO_USERNAME="user@example.com"
-SOGO_PASSWORD="password"
-SOGO_CALENDAR_URL="https://example.com/SOGo/dav/user/Calendar/"
+USERNAME="user@example.com"
+PASSWORD="password"
+CALENDAR_URL="https://example.com/SOGo/dav/user/Calendar/"
 
 ALL4SCHOOLS_URL="https://example.com/"
 ALL4SCHOOLS_USERNAME="username"
@@ -126,9 +126,56 @@ SLEEP_PRINT_DELAY_SECONDS=10
   4. Copy the string inside the quotes of the value property behind `__VIEWSTATE` and `__EVENTVALIDATION`.
 
 - **Calendar URL**
-  1. Log in to your calendar.
-  2. (Optional) Create a new calendar.
-  3. Obtain the CalDAV URL for the calendar.
+
+  ### SOGo
+  1. Log in to your SOGo calendar.
+  2. Select the calendar you want to use.
+  3. Click on the three dots next to the calendar name.
+  4. Choose "Links to this calendar" and copy the CalDAV URL.
+
+  ### iCloud
+  1. Create an app-specific password under [App-Specific Passwords](https://account.apple.com/account/manage).
+  2. Use the following Python script to list your iCloud calendars and obtain the CalDAV URL:
+  
+  ```python
+  # list_icloud_calendars.py
+  import caldav
+  import argparse
+
+  def list_icloud_calendars(username, app_specific_password):
+      """
+      List iCloud calendars for a given username and app-specific password.
+
+      Args:
+          username (str): The iCloud username.
+          app_specific_password (str): The app-specific password for iCloud.
+
+      Returns:
+          None
+      """
+      # URL of the iCloud CalDAV server
+      caldav_url = 'https://caldav.icloud.com/'
+
+      # Connect to the iCloud CalDAV server
+      client = caldav.DAVClient(url=caldav_url, username=username, password=app_specific_password)
+      principal = client.principal()
+
+      # Get the calendar
+      calendars = principal.calendars()
+      for calendar in calendars:
+          print(f"Calendar Name: \033[94m{calendar.name}\033[0m\nURL: \033[92m{calendar.url}\033[0m\n")
+
+  if __name__ == "__main__":
+      parser = argparse.ArgumentParser(description='List iCloud calendars.')
+      parser.add_argument('-u', '--user', required=True, help='iCloud username')
+      parser.add_argument('-p', '--password', required=True, help='iCloud app-specific password')
+
+      args = parser.parse_args()
+      list_icloud_calendars(args.user, args.password)
+  ```
+
+  3. Run the script with your iCloud username and app-specific password to list your calendars and their URLs.
+  4. Copy the URL for the correct calendar.
 
 ## Usage
 
