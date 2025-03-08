@@ -196,11 +196,7 @@ def main():
 
     print_with_timestamp("\033[94mCompressing events...\033[0m")
     compressed_data = compress_events(parsed_data)
-    import json
-    with open("compressed.json", 'w') as json_file:
-        json.dump(compressed_data, json_file, indent=4)
     print_with_timestamp("\033[92mCompressed events\033[0m")
-
 
     print_with_timestamp("\033[94mAdding events to calendar...\033[0m")
     total_events = len(compressed_data)
