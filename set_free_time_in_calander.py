@@ -27,12 +27,12 @@ def remove_events_in_time_range(time_range):
     - The function uses environment variables for calendar service credentials and configuration.
     - Events are deleted if they fall completely outside the specified free time slots.
     """
-    url = os.getenv('SOGO_CALENDAR_URL')
-    username = os.getenv('SOGO_USERNAME')
-    password = os.getenv('SOGO_PASSWORD')
+    url = os.getenv('CALENDAR_URL')
+    username = os.getenv('USERNAME')
+    password = os.getenv('PASSWORD')
 
     client = DAVClient(url=url, username=username, password=password)
-    calendar__ = client.calendar(url=os.getenv('SOGO_CALENDAR_URL'))
+    calendar__ = client.calendar(url=url)
 
     start = datetime.now()
     end = datetime.now() + timedelta(days=int(os.getenv('DAYS_TO_UPDATE')))
