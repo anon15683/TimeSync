@@ -24,7 +24,7 @@ def get_cookies():
     api_endpoint = 'modules/Login.aspx'
     full_url = f"{base_url}/{api_endpoint}"
 
-    response = requests.get(base_url)
+    response = requests.get(full_url)
     response_text = response.text
 
     soup = BeautifulSoup(response_text, 'html.parser')
