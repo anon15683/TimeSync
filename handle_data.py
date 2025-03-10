@@ -32,8 +32,10 @@ def handle_data(data):
         lessons_to_remove = os.getenv('ALL4SCHOOLS_LESSONS_TO_REMOVE')
         if lessons_to_remove:
             lessons_to_remove = json.loads(lessons_to_remove)
-        if not any(subject in lesson["SubjectName"] for subject in lessons_to_remove):
-            filtered_lessons.append(lesson)
+        for subject in lessons_to_remove:
+            if subject not in lesson["SubjectName"]:
+                filtered_lessons.append(lesson)
+                break
 
     filtered_lessons_json = {"lessons": []}
 
