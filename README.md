@@ -105,8 +105,6 @@ CALENDAR_URL="https://example.com/SOGo/dav/user/Calendar/"
 ALL4SCHOOLS_URL="https://example.com/"
 ALL4SCHOOLS_USERNAME="username"
 ALL4SCHOOLS_PASSWORD="password"
-ALL4SCHOOLS_VIEWSTATE="viewstate"
-ALL4SCHOOLS_EVENTVALIDATION="eventvalidation"
 
 DAYS_TO_ADD=14
 DAYS_TO_UPDATE=7
@@ -117,15 +115,7 @@ PRINT_BAR_LENGTH=40
 SLEEP_PRINT_DELAY_SECONDS=10
 ```
 
-### How to Obtain ViewState, EventValidation, and Calendar URL
-
-- **ViewState and EventValidation**
-  1. Navigate to your All4Schools page.
-  2. Press Ctrl+U to access page source.
-  3. Look vor `__VIEWSTATE` and `__EVENTVALIDATION`.
-  4. Copy the string inside the quotes of the value property behind `__VIEWSTATE` and `__EVENTVALIDATION`.
-
-- **Calendar URL**
+### How to Obtain Calendar URL
 
   ### SOGo
   1. Log in to your SOGo calendar.

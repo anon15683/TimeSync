@@ -1,8 +1,11 @@
 import requests
 from dotenv import load_dotenv
 import os
+from bs4 import BeautifulSoup
 
 load_dotenv(override=True)
+
+
 def get_cookies():
     """
     This function sends a POST request to the login page of a website,
@@ -21,9 +24,16 @@ def get_cookies():
     api_endpoint = 'modules/Login.aspx'
     full_url = f"{base_url}/{api_endpoint}"
 
+    response = requests.get(full_url)
+    response_text = response.text
+
+    soup = BeautifulSoup(response_text, 'html.parser')
+    viewstate = soup.find(id="__VIEWSTATE")['value']
+    eventvalidation = soup.find(id="__EVENTVALIDATION")['value']
+
     data = {
-        "__VIEWSTATE": os.getenv('ALL4SCHOOLS_VIEWSTATE'),
-        "__EVENTVALIDATION": os.getenv('ALL4SCHOOLS_EVENTVALIDATION'),
+        "__VIEWSTATE": viewstate,
+        "__EVENTVALIDATION": eventvalidation,
         "loginbutton": "",
         "username": os.getenv('ALL4SCHOOLS_USERNAME'),
         "password": os.getenv('ALL4SCHOOLS_PASSWORD'),

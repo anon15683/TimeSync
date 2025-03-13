@@ -1,3 +1,6 @@
+import os
+import json
+
 def handle_data(data):
     """
     Process and filter lesson data, excluding lessons with 'StudioTimes' in the subject name.
@@ -26,8 +29,13 @@ def handle_data(data):
     filtered_lessons = []
 
     for lesson in data["lessons"]:
-        if not lesson["SubjectName"].startswith("StudioTimes"):
-            filtered_lessons.append(lesson)
+        lessons_to_remove = os.getenv('ALL4SCHOOLS_LESSONS_TO_REMOVE')
+        if lessons_to_remove:
+            lessons_to_remove = json.loads(lessons_to_remove)
+        for subject in lessons_to_remove:
+            if subject not in lesson["SubjectName"]:
+                filtered_lessons.append(lesson)
+                break
 
     filtered_lessons_json = {"lessons": []}
 
